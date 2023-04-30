@@ -8,7 +8,7 @@ namespace C_.Services.EventService
     public class EventService : IEventService
     {
         private static List<Event> events = new List<Event>{
-            new Event(),
+            new Event(){Name="Gangna", Id=1},
             new Event(){Name="Euroviziaaa", Id=2},
         }; 
         private readonly IMapper _mapper; 
@@ -19,7 +19,10 @@ namespace C_.Services.EventService
 
         public async Task<ServiceResponse<string>> AddEvent(AddEventDto newEvent)
         {
-            events.Add(_mapper.Map<Event>(newEvent));
+            var currentEvent = _mapper.Map<Event>(newEvent);
+            currentEvent.Id = events.Max(c => c.Id) + 1;
+
+            events.Add(currentEvent);
 
             var serviceResponse = new ServiceResponse<string>();
             serviceResponse.Data = "Added";
