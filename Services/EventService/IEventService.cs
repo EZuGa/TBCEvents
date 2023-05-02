@@ -10,5 +10,7 @@ namespace C_.Services.EventService
         Task<ServiceResponse<List<GetEventDto>>> GetAllEvents();
         Task<ServiceResponse<GetEventDto>> GetSingleEvent(int id);
         Task<ServiceResponse<string>> AddEvent(AddEventDto newEvent);
+        Task<ServiceResponse<GetEventDto>> UpdateEvent(UpdateEventDto updateEvent);
+
     }
 }

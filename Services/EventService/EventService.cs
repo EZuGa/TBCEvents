@@ -45,5 +45,26 @@ namespace C_.Services.EventService
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<GetEventDto>> UpdateEvent(UpdateEventDto updateEvent)
+        {
+            var serviceResponse = new ServiceResponse<GetEventDto>();
+            try{
+            var tbcEvent = events.FirstOrDefault(c => c.Id == updateEvent.Id);
+
+            if(tbcEvent is null)
+                throw new Exception("Event doesn't exist and could be updated");
+
+            _mapper.Map(updateEvent, tbcEvent);
+
+            serviceResponse.Data = _mapper.Map<GetEventDto>(tbcEvent);
+            }catch(Exception ex){
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+
+            return serviceResponse;
+        }
     }
 }

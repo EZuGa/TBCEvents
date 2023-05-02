@@ -31,6 +31,10 @@ namespace C_.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> AddEvent(AddEventDto newEvent){
             return Ok(await _eventService.AddEvent(newEvent));
         }
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<string>>> UpdateEvent(UpdateEventDto updatedEvent){
+            return Ok(await _eventService.UpdateEvent(updatedEvent));
+        }
         
     }
 }
