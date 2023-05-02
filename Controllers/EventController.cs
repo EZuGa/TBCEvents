@@ -35,6 +35,10 @@ namespace C_.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> UpdateEvent(UpdateEventDto updatedEvent){
             return Ok(await _eventService.UpdateEvent(updatedEvent));
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<string>>> DeleteEvent(int id){
+            return Ok(await _eventService.DeleteEvent(id));
+        }
         
     }
 }

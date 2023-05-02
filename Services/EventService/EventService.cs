@@ -66,5 +66,17 @@ namespace C_.Services.EventService
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<string>> DeleteEvent(int id)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+            var tbcEvent = events.First(c => c.Id == id);
+
+            events.Remove(tbcEvent);
+
+            serviceResponse.Data = "REMOVED!";
+
+            return serviceResponse;
+        }
     }
 }

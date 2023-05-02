@@ -11,6 +11,6 @@ namespace C_.Services.EventService
         Task<ServiceResponse<GetEventDto>> GetSingleEvent(int id);
         Task<ServiceResponse<string>> AddEvent(AddEventDto newEvent);
         Task<ServiceResponse<GetEventDto>> UpdateEvent(UpdateEventDto updateEvent);
-
+        Task<ServiceResponse<string>> DeleteEvent(int id);
     }
 }
