@@ -7,22 +7,26 @@ namespace C_.Services.EventService
 {
     public class EventService : IEventService
     {
-        private static List<Event> events = new List<Event>{
-            new Event(){Name="Gangna", Id=1},
-            new Event(){Name="Euroviziaaa", Id=2},
-        }; 
-        private readonly IMapper _mapper; 
-        public EventService(IMapper mapper)
+        // private static List<Event> events = new List<Event>{
+        //     new Event(){Name="Gangna", Id=1},
+        //     new Event(){Name="Euroviziaaa", Id=2},
+        // }; 
+        private readonly IMapper _mapper;
+        private readonly DataContext _context;
+
+        public EventService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<ServiceResponse<string>> AddEvent(AddEventDto newEvent)
         {
             var currentEvent = _mapper.Map<Event>(newEvent);
-            currentEvent.Id = events.Max(c => c.Id) + 1;
+            // currentEvent.Id = events.Max(c => c.Id) + 1;
 
-            events.Add(currentEvent);
+            _context.Events.Add(currentEvent);
+            await _context.SaveChangesAsync();
 
             var serviceResponse = new ServiceResponse<string>();
             serviceResponse.Data = "Added";
@@ -32,7 +36,9 @@ namespace C_.Services.EventService
         public async Task<ServiceResponse<List<GetEventDto>>> GetAllEvents()
         {
             var serviceResponse = new ServiceResponse<List<GetEventDto>>();
-            serviceResponse.Data = events.Select(c => _mapper.Map<GetEventDto>(c)).ToList();
+            var dbEvents = await _context.Events.ToListAsync();
+
+            serviceResponse.Data = dbEvents.Select(c => _mapper.Map<GetEventDto>(c)).ToList();
 
             return serviceResponse;
         }
@@ -40,8 +46,8 @@ namespace C_.Services.EventService
         public async Task<ServiceResponse<GetEventDto>> GetSingleEvent(int id)
         {
             var serviceResponse = new ServiceResponse<GetEventDto>();
-            var singleEvent = events.FirstOrDefault(c=> c.Id == id);
-            serviceResponse.Data = _mapper.Map<GetEventDto>(singleEvent);
+            var dbEvent = await _context.Events.FirstOrDefaultAsync(c=> c.Id == id);
+            serviceResponse.Data = _mapper.Map<GetEventDto>(dbEvent);
 
             return serviceResponse;
         }
@@ -50,7 +56,8 @@ namespace C_.Services.EventService
         {
             var serviceResponse = new ServiceResponse<GetEventDto>();
             try{
-            var tbcEvent = events.FirstOrDefault(c => c.Id == updateEvent.Id);
+            // var tbcEvent = events.FirstOrDefault(c => c.Id == updateEvent.Id);
+            var tbcEvent = await _context.Events.FindAsync(updateEvent.Id);
 
             if(tbcEvent is null)
                 throw new Exception("Event doesn't exist and could be updated");
@@ -58,6 +65,8 @@ namespace C_.Services.EventService
             _mapper.Map(updateEvent, tbcEvent);
 
             serviceResponse.Data = _mapper.Map<GetEventDto>(tbcEvent);
+
+            await _context.SaveChangesAsync();
             }catch(Exception ex){
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
@@ -70,9 +79,13 @@ namespace C_.Services.EventService
         public async Task<ServiceResponse<string>> DeleteEvent(int id)
         {
             var serviceResponse = new ServiceResponse<string>();
-            var tbcEvent = events.First(c => c.Id == id);
+            // var tbcEvent = events.First(c => c.Id == id);
+            var tbcEvent = await _context.Events.FindAsync(id);
 
-            events.Remove(tbcEvent);
+
+            _context.Events.Remove(tbcEvent);
+
+            await _context.SaveChangesAsync();
 
             serviceResponse.Data = "REMOVED!";
 
