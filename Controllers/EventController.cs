@@ -21,6 +21,11 @@ namespace C_.Controllers
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetEventDto>>>> Get(){
+
+        if (HttpContext.GetRequestedApiVersion().MajorVersion == 2)
+        {
+            return Ok("This is version 2.0");
+        }
             return Ok(await _eventService.GetAllEvents());
         }
 
