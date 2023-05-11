@@ -43,6 +43,7 @@ namespace C_.Controllers
                 return BadRequest("User Not Found! (Password)");
             }
 
+            
             string token = CreateToken(user);
             
             return Ok(token);
@@ -56,16 +57,21 @@ namespace C_.Controllers
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-            var token = new JwtSecurityToken(
+            Console.WriteLine("AQAA");
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            Console.WriteLine("VEGARAA");
+
+
+            var token1 = new JwtSecurityToken(
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds
             );
+            Console.WriteLine("VEGARAA???");
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token1);
+                        Console.WriteLine("ZD");
             return jwt;
         }
     }
