@@ -57,21 +57,15 @@ namespace C_.Controllers
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
 
-
-            Console.WriteLine("AQAA");
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            Console.WriteLine("VEGARAA");
 
-
-            var token1 = new JwtSecurityToken(
+            var token = new JwtSecurityToken(
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds
             );
-            Console.WriteLine("VEGARAA???");
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token1);
-                        Console.WriteLine("ZD");
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
     }
