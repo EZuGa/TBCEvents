@@ -15,26 +15,37 @@ namespace C_.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
+        // public static User user = new User();
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        private readonly DataContext _context;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, IMapper mapper, DataContext context)
         {
             _configuration = configuration;
+            _mapper = mapper;
+            _context = context;
         }
 
 
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request){
+        public async Task<ActionResult<User>> Register(UserDto request){
+            var user = new User();
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
             user.Username = request.Username;
             user.PasswordHash = passwordHash;
+            // user.isAdmin = true;
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
             
             return Ok(user);
         }
 
         [HttpPost("login")]
         public ActionResult<User> Login(UserDto request){
+            var user = _context.Users.Single(u => u.Username == request.Username);
+
             if(user.Username != request.Username){
                 return BadRequest("User Not Found!");
             }
@@ -53,8 +64,11 @@ namespace C_.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "Admin"),
+                // new Claim(ClaimTypes.Role, "Admin"),
             };
+            if(user.isAdmin){
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
 
