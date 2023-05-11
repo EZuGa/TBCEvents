@@ -7,7 +7,8 @@ namespace C_.Models
 {
     public class User
     {
-        // public int Id { get; set; }
+        public int Id { get; set; }
+        public bool isAdmin { get; set; } = false;
         public string Username { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
     }
