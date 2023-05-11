@@ -91,5 +91,19 @@ namespace C_.Services.EventService
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<string>> MakeLive(int id)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+
+            var eventToUpdate = await _context.Events.FindAsync(id);
+
+            eventToUpdate.IsActive = true;
+
+            serviceResponse.Data = "Is live!";
+            await _context.SaveChangesAsync();
+
+            return serviceResponse;
+        }
     }
 }

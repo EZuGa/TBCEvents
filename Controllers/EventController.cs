@@ -46,6 +46,10 @@ namespace C_.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> DeleteEvent(int id){
             return Ok(await _eventService.DeleteEvent(id));
         }
+        [HttpPost("makeLive/{id}")]
+        public async Task<ActionResult<ServiceResponse<string>>> MakeLive(int id){
+            return Ok(await _eventService.MakeLive(id));
+        }
         
     }
 }
