@@ -14,6 +14,7 @@ namespace C_.Data
         }
 
         public DbSet<Event> Events => Set<Event>();
+        public DbSet<User> Users => Set<User>();
         
     }
 }
