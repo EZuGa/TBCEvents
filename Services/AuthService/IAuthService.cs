@@ -10,7 +10,7 @@ namespace C_.Services.AuthService
     {
         Task<ServiceResponse<string>> Register(UserDto request);
         Task<ServiceResponse<string>> Login(UserDto request);
-        Task<ServiceResponse<string>> DeleteUser();
+        Task<ServiceResponse<string>> DeleteUser(int id);
         Task<ServiceResponse<string>> UpdateUser();
         Task<ServiceResponse<List<User>>> SeeAll();
     }

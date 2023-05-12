@@ -23,6 +23,16 @@ namespace C_.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> Login(UserDto request){
             return Ok(await _authService.Login(request));
         }
+
+        [HttpDelete("Delete")]
+        public async Task<ActionResult<ServiceResponse<string>>> Delete(int id){
+            return Ok(await _authService.DeleteUser(id));
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<ServiceResponse<List<User>>>> GetAll(){
+            return Ok(await _authService.SeeAll());
+        }
         
     }
 }

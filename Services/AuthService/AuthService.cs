@@ -46,29 +46,43 @@ namespace C_.Services.AuthService
 
         public async Task<ServiceResponse<string>> Register(UserDto request)
         {
-            Console.WriteLine("AQAA");
             var serviceResponse = new ServiceResponse<string>();
             var user = new User();
-            Console.WriteLine("AQAA2");
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
             user.Username = request.Username;
             user.PasswordHash = passwordHash;
             // user.isAdmin = true;
-            Console.WriteLine("AQAA3");
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             serviceResponse.Data = "Regietered!";
-            Console.WriteLine("AQAA4");
             return serviceResponse;
         }
-        public Task<ServiceResponse<string>> DeleteUser()
+        public async Task<ServiceResponse<string>> DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<string>();
+            // var tbcEvent = events.First(c => c.Id == id);
+            var userToDelete = await _context.Users.FindAsync(id);
+
+
+            _context.Users.Remove(userToDelete);
+
+            await _context.SaveChangesAsync();
+
+            serviceResponse.Data = "REMOVED!";
+
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<User>>> SeeAll()
+        public async Task<ServiceResponse<List<User>>> SeeAll()
         {
-            throw new NotImplementedException();
+            var users = await _context.Users.ToListAsync();
+
+            var serviceResponse = new ServiceResponse<List<User>>
+            {
+                Data = users
+            };
+
+            return serviceResponse;
         }
 
         public Task<ServiceResponse<string>> UpdateUser()
