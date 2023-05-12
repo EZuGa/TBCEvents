@@ -17,6 +17,7 @@ namespace C_.Middlewars
     }
     catch (Exception ex)
     {
+        Console.WriteLine(ex);
         // Create a new response with the error message
         var response = new ServiceResponse<object>()
         {

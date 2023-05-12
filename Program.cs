@@ -1,11 +1,13 @@
 global using C_.Models;
 global using C_.Services.EventService;
 global using C_.Dtos.Event;
+global using C_.Services.AuthService;
 global using AutoMapper;
 global using Microsoft.EntityFrameworkCore;
 global using C_.Data;
 global using C_.Middlewars;
 global using Microsoft.AspNetCore.Mvc.ApiExplorer;
+global using C_.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using C_.Options;
@@ -36,6 +38,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
