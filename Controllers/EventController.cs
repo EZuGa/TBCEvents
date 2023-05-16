@@ -42,18 +42,22 @@ namespace C_.Controllers
             return Ok(await _eventService.AddEvent(newEvent));
         }
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult<ServiceResponse<string>>> UpdateEvent(UpdateEventDto updatedEvent){
             return Ok(await _eventService.UpdateEvent(updatedEvent));
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<string>>> DeleteEvent(int id){
             return Ok(await _eventService.DeleteEvent(id));
         }
         [HttpPost("makeLive/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<string>>> MakeLive(int id){
             return Ok(await _eventService.MakeLive(id));
         }
         [HttpPost("setUpdateDeadline/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<string>>> setUpdateDeadline(int id, DateTime updateDeadline){
             return Ok(await _eventService.SetUpdateDeadline(id, updateDeadline));
         }

@@ -12,7 +12,7 @@ namespace C_.Dtos.Event
         public string Name { get; set; } = "Unnamed";
         public string Details { get; set; } = string.Empty;
         // public bool IsActive { get; set; } = false;
-        // public DateTime Date { get; set; }
+        public DateTime Date { get; set; }
         // public DateTime ModificationDeadline { get; set; }
         // public string CreatedBy { get; set; } = string.Empty;
     }

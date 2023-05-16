@@ -1,4 +1,5 @@
 using C_.Services.AuthService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C_.Controllers
@@ -25,11 +26,13 @@ namespace C_.Controllers
         }
 
         [HttpDelete("Delete")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<string>>> Delete(int id){
             return Ok(await _authService.DeleteUser(id));
         }
 
         [HttpGet("GetAll")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<User>>>> GetAll(){
             return Ok(await _authService.SeeAll());
         }
