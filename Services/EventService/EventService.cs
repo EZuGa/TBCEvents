@@ -73,7 +73,7 @@ namespace C_.Services.EventService
 
             var compareDates = DateTime.Compare(tbcEvent.ModificationDeadline, DateTime.Now);
 
-            if(compareDates <= 1){
+            if(compareDates < 1){
                 throw new Exception("Date is already past! :(");
             }
 
