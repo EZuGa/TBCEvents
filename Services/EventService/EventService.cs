@@ -69,8 +69,13 @@ namespace C_.Services.EventService
         {
             var serviceResponse = new ServiceResponse<GetEventDto>();
             try{
-            // var tbcEvent = events.FirstOrDefault(c => c.Id == updateEvent.Id);
             var tbcEvent = await _context.Events.FindAsync(updateEvent.Id);
+
+            var compareDates = DateTime.Compare(tbcEvent.ModificationDeadline, DateTime.Now);
+
+            if(compareDates <= 1){
+                throw new Exception("Date is already past! :(");
+            }
 
             if(tbcEvent is null)
                 throw new Exception("Event doesn't exist and could be updated");
