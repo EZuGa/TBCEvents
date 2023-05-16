@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,17 +14,29 @@ namespace C_.Services.EventService
         // }; 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EventService(IMapper mapper, DataContext context)
+
+        public EventService(IMapper mapper, DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ServiceResponse<string>> AddEvent(AddEventDto newEvent)
         {
+            var authToken = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString();
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(authToken.Replace("bearer ", ""));
+            var userName = token.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")!.Value;
+            // Console.WriteLine(userName);
             var currentEvent = _mapper.Map<Event>(newEvent);
-            // currentEvent.Id = events.Max(c => c.Id) + 1;
+            currentEvent.CreatedBy = userName;
+            // Console.WriteLine("ABC");
+            // Console.WriteLine(userName);
+
+            
 
             _context.Events.Add(currentEvent);
             await _context.SaveChangesAsync();

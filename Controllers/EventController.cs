@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C_.Controllers
@@ -35,7 +36,9 @@ namespace C_.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ServiceResponse<string>>> AddEvent(AddEventDto newEvent){
+            Console.WriteLine(HttpContext.Request.Headers["Authorization"].ToString());
             return Ok(await _eventService.AddEvent(newEvent));
         }
         [HttpPut]
