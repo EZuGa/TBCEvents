@@ -53,6 +53,10 @@ namespace C_.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> MakeLive(int id){
             return Ok(await _eventService.MakeLive(id));
         }
+        [HttpPost("setUpdateDeadline/{id}")]
+        public async Task<ActionResult<ServiceResponse<string>>> setUpdateDeadline(int id, DateTime updateDeadline){
+            return Ok(await _eventService.SetUpdateDeadline(id, updateDeadline));
+        }
         
     }
 }

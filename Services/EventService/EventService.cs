@@ -118,5 +118,20 @@ namespace C_.Services.EventService
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<string>> SetUpdateDeadline(int id, DateTime updateDeadline)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+
+            var eventToUpdate = await _context.Events.FindAsync(id);
+
+            eventToUpdate.ModificationDeadline = updateDeadline;
+            await _context.SaveChangesAsync();
+
+            serviceResponse.Data = "Updated";
+
+            return serviceResponse;
+
+        }
     }
 }

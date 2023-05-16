@@ -13,5 +13,6 @@ namespace C_.Services.EventService
         Task<ServiceResponse<GetEventDto>> UpdateEvent(UpdateEventDto updateEvent);
         Task<ServiceResponse<string>> DeleteEvent(int id);
         Task<ServiceResponse<string>> MakeLive(int id);
+        Task<ServiceResponse<string>> SetUpdateDeadline(int id, DateTime updateDeadline);
     }
 }
